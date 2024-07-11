@@ -30,3 +30,38 @@ def create_measurement(measurement: Measurement, db: Session = Depends(get_db)):
 @app.get("/get-all-measurements/", response_model=List[Measurement])
 def read_measurements(db: Session = Depends(get_db)):
     return db.query(MeasurementDB).all()
+
+
+@app.get("/get-last-measurement/", response_model=Measurement)
+def read_last_measurement(db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).order_by(MeasurementDB.id.desc()).first()
+
+
+@app.get("/get-highest-temp-measurements/", response_model=List[Measurement])
+def get_top_temp_measurements(db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.temp.desc()).limit(10).all()
+
+
+@app.get("/get-lowest-temp-measurements/", response_model=List[Measurement])
+def get_top_temp_measurements(db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.temp.asc()).limit(10).all()
+
+
+@app.get("/get-highest-hum-measurements/", response_model=List[Measurement])
+def get_top_hum_measurements( db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.hum.desc()).limit(10).all()
+
+
+@app.get("/get-lowest-hum-measurements/", response_model=List[Measurement])
+def get_top_hum_measurements( db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.hum.asc()).limit(10).all()
+
+
+@app.get("/get-highest-calAire-measurements/", response_model=List[Measurement])   
+def get_top_calAire_measurements(db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.calAire.desc()).limit(10).all()
+
+
+@app.get("/get-lowest-calAire-measurements/", response_model=List[Measurement])   
+def get_top_calAire_measurements(db: Session = Depends(get_db)):
+    return db.query(MeasurementDB).filter(MeasurementDB.calAire > 0.0, MeasurementDB.calAire < 4000.0).order_by(MeasurementDB.calAire.asc()).limit(10).all()
